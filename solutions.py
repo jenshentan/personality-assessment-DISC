@@ -1,5 +1,6 @@
 import os 
 import csv
+from colorama import Fore, Back, Style
 
 class Person:
 
@@ -46,7 +47,23 @@ class User(Person):
         pass
 
     def new_personality_assessment(self):
-        pass
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I am a good listener")
+        while True:
+            try:
+                s1 = int(input(self))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s1 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s1 >5:
+                print("Your value must be between 1 -5")
+                continue
+            else:
+                break
+        return s1
 
     def view_own_personlity(self):
         pass
@@ -65,8 +82,8 @@ class User(Person):
 
 
 
-def main():
-    pass
+# def main():
+#     pass
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
