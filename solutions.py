@@ -9,6 +9,9 @@ class Person:
     def __init__(self):
         self.record = None
         self.key = None
+        self.read_file_data()
+        #self.create_new_account()
+        
         
 
     def read_file_data(self):
@@ -93,6 +96,8 @@ class Person:
 
     #THIS IS A USER FUNCTION
     def print_info(self):
+        self.read_file_data()
+
         username_welcome = (f"{self.record[0]} {self.record[1]}")
         upper_username = username_welcome.upper()
 
@@ -122,15 +127,18 @@ class Person:
         }
         sorted_temp_dict = dict(sorted(temp_dict.items(),key=lambda item:item[1],reverse=True))
         #print(sorted_temp_dict)
+
+        #References : https://www.geeksforgeeks.org/python-get-the-first-key-in-dictionary/
+        first_key_value = next(iter(sorted_temp_dict))
+
+        #IF first key value is none, output = "not determined yet, please view again after your assessment."
+
         print(f"Hi {upper_username}")
+        print(f"Your age is {int(self.record[4])} and your dominant personality type is {str(first_key_value)}")
         print(f'Your Current Personality Profile Score is : ')        
         for key,value in sorted_temp_dict.items():
             print(key,' : ',value)
 
-        # print(f'Controller : {d_personality}')
-        # print(f'Promoter : {i_personality}')
-        # print(f'Supporter : {s_personality}')
-        # print(f'Analyser : {c_personality}')
 
     #THIS IS AN ADMIN FUNCTION
     def view_all_users(self):
@@ -963,7 +971,7 @@ class Person:
         list_to_combine = [self.key,self.record[0],self.record[1],self.record[2],self.record[3],self.record[4],self.record[5]]
         score_list = [d_score,i_score,s_score,c_score]
         list_to_combine.extend(score_list)
-        print(list_to_combine)
+        #print(list_to_combine)
         
         file_name = 'database_disc.csv'
         
@@ -984,12 +992,112 @@ class Person:
         }
         
         sorted_new_dict = dict(sorted(new_dictionary.items(),key=lambda item:item[1],reverse=True))
-        print(sorted_new_dict)        
+        #print(sorted_new_dict)
+        print(f'Your Current Personality Profile Score is : ')        
+        for key,value in sorted_new_dict.items():
+            print(key,' : ',value)        
 
-person = Person()
-person.read_file_data()
-person.login_account(10006,'2020')
+    def view_d_score(self):
+        print(f"D stands for Extrovert & Task Oriented, which means you have the personality of a Controller!")
+
+    def view_i_score(self):
+        print(f"I stands for Extrovert & People Oriented, which means you have the personality of a Promoter!")
+
+    def view_c_score(self):
+        print(f"C stands for Introvert & Task Oriented, which means you have the personality of a Analyser!")
+
+    def view_s_score(self):
+        print(f"S stands for Introvert & People Oriented, which means you have the personality of a Analyser!")
+
+    def menu(self):
+        print(f"Welcome JS's DISC Personality Assessment Application.")
+        print("[1] - View My Profile Information")
+        print("[2] - Perform My Personality Assessment")
+        print("[3] - Read My Own Personality Traits")
+        print("[4] - Read About Others Personality Traits")
+        print("[5] - Check My Compatibility")
+        print("[0] - Exit")
+
+        
+        option = int(input("What would you like to do today : "))
+        
+        while option != 0:
+            
+            if option == 1:
+                self.print_info()
+
+            elif option == 2:             
+                self.personality_assessment()
+
+            elif option == 3:
+                print("Read Own Personality Traits")
+                
+            elif option == 4:
+                print("Read about others Personality Traits")
+                
+                
+            elif option == 5:
+                print("Check my compatibility")
+
+            else:
+                print("Please Choose Available Options on Screen")
+
+            print()
+            self.menu()
+            option = int(input("What would you like to do today : "))
+        
+        
+        main()
+        print("See you again soon!")
+
+
+def main():
+    person  = Person()
+    print("Welcome to JS's DISC Application Beta - (Version 1)")
+    print("[1] Sign Up For A New Account")
+    print("[2] Login to Existing Account")
+    print("[0] Exit")
+    option = int(input("Hi, what would you like to do today? "))
+    while option !=0:
+        if option == 1:
+            print("Creating New Account with JS's DISC Application!")
+            person.create_new_account()
+
+        elif option ==2:
+            print("User Login")
+            login = person.login_account(account_id=int(input("Key-In Your ID ")),password=input("Enter Your Password "))
+            print(login)
+            if login == True:
+                person.menu()
+                print("Getting to the menu")
+            elif login == False:
+                main()
+            elif login == None:
+                main()
+            else:
+                pass
+        else:
+            print("Please Choose Available Options on Screen")
+        print()
+        main()
+        option = int(input("Hi, what would you like to do today? "))
+    quit()
+    print("See you again")
+
+    
+    
+ 
+
+if __name__ == '__main__':
+    main()
+
+
+
+###==========================================================================================================================================================
+# person = Person()
+# person.read_file_data()
+# person.login_account(10001,'123')
 #person.create_new_account()
-
+# person.view_c_score()
 #person.personality_assessment()
-person.print_info()
+#person.print_info()
