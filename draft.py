@@ -1,149 +1,20 @@
-import os
+import os 
 import csv
 from colorama import Fore, Back, Style
 
 class Person:
 
-    data = {}
-
     def __init__(self):
-        self.record = None
-        self.key = None
-        
-
-    def read_file_data(self):
-        file_name = 'database_disc.csv'
-        
-        current_folder = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_folder,file_name)
-        file = open(file_path,'r')
-
-        for line in file:
-            #print(line)
-            line = line.strip("\n")
-            column = line.split(',')
-            #print(column)
-
-            Person.data[int(column[0])] = [column[1],column[2],column[3],column[4],float(column[5]),column[6],float(column[7]),float(column[8]),float(column[9]),float(column[10])]
-            
-        file.close()
-    #THIS IS BOTH AN ADMIN AND USER FUNCTION
-    def create_new_account(self):
-
-        file_name = 'database_disc.csv'
-        
-        current_folder = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_folder,file_name)
-        file = open(file_path,'r')
-
-        with open(file_path,'a+', newline='') as main_data:
-            new_data = csv.writer(main_data,delimiter=",",quoting=csv.QUOTE_MINIMAL)
-            new_key = max(list(Person.data.keys())) + 1
-            #print(new_key)
-            print(f"You are creating a new personality assessment account with us and your reference number is {new_key}")
-
-            reference_no = new_key
-            first_name = input("Enter Your First Name : ")
-            last_name = input("Enter Your Last Name : ")
-            email_add = input("Enter Your Email Address : ")
-            new_pass = input("Create a new Password : ")
-            user_age = int(input("Enter Your Age : "))
-            acc_type = "user"
-            d_quadrant = 0
-            i_quadrant = 0
-            s_quadrant = 0
-            c_quadrant = 0
-
-            new_row = [reference_no,first_name,last_name,email_add,new_pass,user_age,acc_type,d_quadrant,i_quadrant,s_quadrant,c_quadrant]
-
-            new_data.writerow(new_row)
-
-            first_name_upper = first_name.upper()
-            last_name_upper = last_name.upper()
-
-            print(f"Welcome to our application {first_name_upper} {last_name_upper} ")
-            print(f"Your account has been registered with the following details :-")
-            print(f"Name : {first_name_upper} {last_name_upper} ")
-            print(f"Age : {user_age} ")
-            print(f"Email Address : {email_add} ")
-            print(f"Your may enjoy our personality assessment application :)")
-
-
-
-    #THIS IS A USER AND ADMIN FUNCTION
-    def login_account(self, account_id = None,password=None):
-        self.key = account_id
-
-        if Person.data.get(account_id):
-            self.record = Person.data.get(account_id)
-            #print("account found")
-            #print(self.record)
-            if self.record[3] == password:
-                #username_welcome = (f"{self.record[0]} {self.record[1]}")
-                #print(f"Welcome {username_welcome.upper()}")
-                print("Welcome")
-                return True
-            else:
-                self.record = None
-                print("Incorrect User ID/Password") 
-                return None       
-        else:
-            print("account not found")
-            return False        
-
-    #THIS IS A USER FUNCTION
-    def print_info(self):
-        username_welcome = (f"{self.record[0]} {self.record[1]}")
-        upper_username = username_welcome.upper()
-
-        if self.record[6] == 0:
-            d_personality = "No data yet, perform your assessment and view again later"
-        else:
-            d_personality = int(self.record[6])
-
-        if self.record[7] == 0:
-            i_personality = "No data yet, perform your assessment and view again later"
-        else:
-            i_personality = int(self.record[7])
-        if self.record[8] == 0:
-            s_personality = "No data yet, perform your assessment and view again later"
-        else:
-            s_personality = int(self.record[8])
-        if self.record[9] == 0:
-            c_personality = "No data yet, perform your assessment and view again later"
-        else:
-            c_personality = int(self.record[9])
-    
-        temp_dict = {
-            "Controller" : d_personality,
-            "Promoter" : i_personality,
-            "Supporter" : s_personality,
-            "Analyser" : c_personality 
-        }
-        sorted_temp_dict = dict(sorted(temp_dict.items(),key=lambda item:item[1],reverse=True))
-        #print(sorted_temp_dict)
-        print(f"Hi {upper_username}")
-        print(f'Your Current Personality Profile Score is : ')        
-        for key,value in sorted_temp_dict.items():
-            print(key,' : ',value)
-
-        # print(f'Controller : {d_personality}')
-        # print(f'Promoter : {i_personality}')
-        # print(f'Supporter : {s_personality}')
-        # print(f'Analyser : {c_personality}')
-
-    #THIS IS AN ADMIN FUNCTION
-    def view_all_users(self):
         pass
 
-    #USER CAN COMPLETE THEIR PERSONALITY ASSESSMENT AND IT WILL BE UPDATED IN THE CSV DATABASE        
-    def personality_assessment(self):
+#This is a function for new personality assessment test
+    def new_personality_assessment(self):
         #reference :  https://www.geeksforgeeks.org/print-colors-python-terminal/
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am a good listener")
+        print(Fore.GREEN +"I am a good listener")
         while True:
             try:
-                s1 = int(input(Fore.WHITE+"Your Choice : "))
+                s1 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -156,62 +27,12 @@ class Person:
             else:
                 break
 
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I want to make the rules")
-        while True:
-            try:
-                c1 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c1 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c1 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break   
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I like to do things accurately")
+        print(Fore.GREEN +"I put up with things that I don't like")
         while True:
             try:
-                d1 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if d1 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif d1 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I have wide variety of friends")
-        while True:
-            try:
-                i1 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i1 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i1 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I put up with things that I don't like")
-        while True:
-            try:
-                s2 = int(input(Fore.WHITE+"Your Choice : "))
+                s2 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -224,62 +45,12 @@ class Person:
             else:
                 break
 
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I go straight ahead with projects")
-        while True:
-            try:
-                c2 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c2 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c2 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I like to do things the right way")
+        print(Fore.GREEN +"I am willing to follow orders")
         while True:
             try:
-                d2 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if d2 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif d2 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break 
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am usually liked by others")
-        while True:
-            try:
-                i2 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i2 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i2 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am willing to follow orders")
-        while True:
-            try:
-                s3 = int(input(Fore.WHITE+"Your Choice : "))
+                s3 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -292,62 +63,12 @@ class Person:
             else:
                 break
 
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I act in a forceful way")
-        while True:
-            try:
-                c3 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c3 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c3 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break 
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I do things right for the first time")
+        print(Fore.GREEN +"I will go along with others")
         while True:
             try:
-                d3 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if d3 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif d3 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I like to meet new people")
-        while True:
-            try:
-                i3 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i3 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i3 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I will go along with others")
-        while True:
-            try:
-                s4 = int(input(Fore.WHITE+"Your Choice : "))
+                s4 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -358,64 +79,14 @@ class Person:
                 print("Your value must be less than 5")
                 continue
             else:
-                break
+                break  
+
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I want to win")
+        print(Fore.GREEN +"I will think of others before I make a decision")
         while True:
             try:
-                c4 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c4 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c4 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break 
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I think of what makes sense")
-        while True:
-            try:
-                d4 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if d4 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif d4 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am fun to be with!")
-        while True:
-            try:
-                i4 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i4 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i4 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I will think of others before I make a decision")
-        while True:
-            try:
-                s5 = int(input(Fore.WHITE+"Your Choice : "))
+                s5 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -428,11 +99,209 @@ class Person:
             else:
                 break
 
+
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I will be the first to act")
+        print(Fore.GREEN +"I am willing to help others")
         while True:
             try:
-                c5 = int(input(Fore.WHITE+"Your Choice : "))
+                s6 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s6 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s6 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I understand others' feelings")
+        while True:
+            try:
+                s7 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s7 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s7 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I am nice to other people")
+        while True:
+            try:
+                s8 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s8 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s8 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I have warm feeling for people")
+        while True:
+            try:
+                s9 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s9 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s9 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I let others lead")
+        while True:
+            try:
+                s10 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s10 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s10 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I dont like to cause problems")
+        while True:
+            try:
+                s11 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s11 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s11 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.GREEN +"I dont make demands of people")
+        while True:
+            try:
+                s12 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if s12 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif s12 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I want to make the rules")
+        while True:
+            try:
+                c1 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c1 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c1 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break   
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I go straight ahead with projects")
+        while True:
+            try:
+                c2 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c2 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c2 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I act in a forceful way")
+        while True:
+            try:
+                c3 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c3 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c3 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break     
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I want to win")
+        while True:
+            try:
+                c4 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c4 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c4 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I will be the first to act")
+        while True:
+            try:
+                c5 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -446,10 +315,407 @@ class Person:
                 break 
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I do not give in easily")
+        while True:
+            try:
+                c6 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c6 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c6 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"People see me as powerful")
+        while True:
+            try:
+                c7 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c7 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c7 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I am sure of myself")
+        while True:
+            try:
+                c8 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c8 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c8 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break       
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I want to be in charge")
+        while True:
+            try:
+                c9 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c9 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c9 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I like to take action")
+        while True:
+            try:
+                c10 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c10 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c10 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I am quick to act")
+        while True:
+            try:
+                c11 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c11 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c11 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.RED +"I feel strong")
+        while True:
+            try:
+                c12 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if c12 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif c12 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I have wide variety of friends")
+        while True:
+            try:
+                i1 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i1 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i1 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I am usually liked by others")
+        while True:
+            try:
+                i2 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i2 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i2 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I like to meet new people")
+        while True:
+            try:
+                i3 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i3 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i3 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I am fun to be with!")
+        while True:
+            try:
+                i4 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i4 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i4 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I always see things positively")
+        while True:
+            try:
+                i5 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i5 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i5 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I feel contented with what I have all the time")
+        while True:
+            try:
+                i6 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i6 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i6 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I am pretty much happy and carefree")
+        while True:
+            try:
+                i7 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i7 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i7 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I can liven things up")
+        while True:
+            try:
+                i8 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i8 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i8 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I feel relaxed most of the time")
+        while True:
+            try:
+                i9 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i9 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i9 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I am happy most of the time")
+        while True:
+            try:
+                i10 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i10 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i10 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I find it easy to meet strangers")
+        while True:
+            try:
+                i11 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i11 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i11 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+        
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.CYAN +"I communicate in a lively manner")
+        while True:
+            try:
+                i12 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if i12 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif i12 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.WHITE +"I like to do things accurately")
+        while True:
+            try:
+                d1 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if d1 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif d1 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.WHITE +"I like to do things the right way")
+        while True:
+            try:
+                d2 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if d2 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif d2 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break 
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.WHITE +"I do things right for the first time")
+        while True:
+            try:
+                d3 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if d3 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif d3 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
+        print(Fore.WHITE +"I think of what makes sense")
+        while True:
+            try:
+                d4 = int(input(Fore.BLUE+"Your Choice : "))
+            except ValueError:
+                print("Only Numbers between 1 - 5 are allowed")
+                continue
+            if d4 < 1:
+                print("Your value must be between 1 -5")
+                continue
+            elif d4 >5:
+                print("Your value must be less than 5")
+                continue
+            else:
+                break
+
+        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I like to be precise")
         while True:
             try:
-                d5 = int(input(Fore.WHITE+"Your Choice : "))
+                d5 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -463,61 +729,10 @@ class Person:
                 break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I always see things positively")
-        while True:
-            try:
-                i5 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i5 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i5 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am willing to help others")
-        while True:
-            try:
-                s6 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s6 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s6 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I do not give in easily")
-        while True:
-            try:
-                c6 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c6 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c6 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I am shy with others")
         while True:
             try:
-                d6 = int(input(Fore.WHITE+"Your Choice : "))
+                d6 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -531,61 +746,10 @@ class Person:
                 break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I feel contented with what I have all the time")
-        while True:
-            try:
-                i6 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i6 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i6 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I understand others' feelings")
-        while True:
-            try:
-                s7 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s7 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s7 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"People see me as powerful")
-        while True:
-            try:
-                c7 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c7 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c7 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I am good at analyzing things")
         while True:
             try:
-                d7 = int(input(Fore.WHITE+"Your Choice : "))
+                d7 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -599,61 +763,10 @@ class Person:
                 break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am pretty much happy and carefree")
-        while True:
-            try:
-                i7 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i7 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i7 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am nice to other people")
-        while True:
-            try:
-                s8 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s8 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s8 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am sure of myself")
-        while True:
-            try:
-                c8 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c8 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c8 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I think things through")
         while True:
             try:
-                d8 = int(input(Fore.WHITE+"Your Choice : "))
+                d8 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -667,61 +780,10 @@ class Person:
                 break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I can liven things up")
-        while True:
-            try:
-                i8 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i8 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i8 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break  
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I have warm feeling for people")
-        while True:
-            try:
-                s9 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s9 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s9 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I want to be in charge")
-        while True:
-            try:
-                c9 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c9 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c9 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I keep things to myself")
         while True:
             try:
-                d9 = int(input(Fore.WHITE+"Your Choice : "))
+                d9 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -735,61 +797,10 @@ class Person:
                 break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I feel relaxed most of the time")
-        while True:
-            try:
-                i9 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i9 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i9 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I let others lead")
-        while True:
-            try:
-                s10 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s10 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s10 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I like to take action")
-        while True:
-            try:
-                c10 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c10 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c10 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I think things over carefully")
         while True:
             try:
-                d10 = int(input(Fore.WHITE+"Your Choice : "))
+                d10 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -800,64 +811,13 @@ class Person:
                 print("Your value must be less than 5")
                 continue
             else:
-                break 
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am happy most of the time")
-        while True:
-            try:
-                i10 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i10 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i10 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I dont like to cause problems")
-        while True:
-            try:
-                s11 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s11 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s11 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I am quick to act")
-        while True:
-            try:
-                c11 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c11 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c11 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
                 break
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I don't like too much attention")
         while True:
             try:
-                d11 = int(input(Fore.WHITE+"Your Choice : "))
+                d11 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -868,64 +828,13 @@ class Person:
                 print("Your value must be less than 5")
                 continue
             else:
-                break 
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I find it easy to meet strangers")
-        while True:
-            try:
-                i11 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i11 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i11 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
                 break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I dont make demands of people")
-        while True:
-            try:
-                s12 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if s12 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif s12 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break
-
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I feel strong")
-        while True:
-            try:
-                c12 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if c12 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif c12 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break 
 
         print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
         print(Fore.WHITE +"I don't say much in a group")
         while True:
             try:
-                d12 = int(input(Fore.WHITE+"Your Choice : "))
+                d12 = int(input(Fore.BLUE+"Your Choice : "))
             except ValueError:
                 print("Only Numbers between 1 - 5 are allowed")
                 continue
@@ -938,43 +847,27 @@ class Person:
             else:
                 break
 
-        print(Fore.YELLOW +"Rate Yourself Between 1-5 on the following statement")
-        print(Fore.WHITE +"I communicate in a lively manner")
-        while True:
-            try:
-                i12 = int(input(Fore.WHITE+"Your Choice : "))
-            except ValueError:
-                print("Only Numbers between 1 - 5 are allowed")
-                continue
-            if i12 < 1:
-                print("Your value must be between 1 -5")
-                continue
-            elif i12 >5:
-                print("Your value must be less than 5")
-                continue
-            else:
-                break 
-
         c_score = d1+d2+d3+d4+d5+d6+d7+d8+d9+d10+d11+d12
         i_score = i1+i2+i3+i4+i5+i6+i7+i8+i9+i10+i11+i12
         s_score = s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12
         d_score = c1+c2+c3+c4+c5+c6+c7+c8+c9+c10+c11+c12
 
-        list_to_combine = [self.key,self.record[0],self.record[1],self.record[2],self.record[3],self.record[4],self.record[5]]
         score_list = [d_score,i_score,s_score,c_score]
-        list_to_combine.extend(score_list)
-        print(list_to_combine)
-        
-        file_name = 'database_disc.csv'
-        
-        current_folder = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_folder,file_name)
-        file = open(file_path,'r')
+        #sort large to small list
 
-        with open(file_path,'a+', newline='') as main_data:
-            new_data = csv.writer(main_data,delimiter=",",quoting=csv.QUOTE_MINIMAL)
-            
-            new_data.writerow(list_to_combine)
+        print(score_list)
+        print("=================\n")
+
+        lowest = min(score_list)
+        highest = max(score_list)
+        print(f"Lowest{lowest}")
+        print("=================\n")
+        print(f"Highest{highest}")
+
+        print("=================\n")
+
+        print("Your Results")
+        print("Your main personality is ........")
 
         new_dictionary = {
             "Controller" : d_score,
@@ -982,14 +875,68 @@ class Person:
             "Analyzer" : c_score,
             "Supporter" : s_score
         }
-        
-        sorted_new_dict = dict(sorted(new_dictionary.items(),key=lambda item:item[1],reverse=True))
-        print(sorted_new_dict)        
+
+        #Smallest to Largest
+        sorted_new_dict = dict(sorted(new_dictionary.items(),key=lambda item:item[1]))
+
+        #Largest to smallest
+        sorted_new_dict_2 = {k:v for k,v in sorted(new_dictionary.items(),key=lambda item: item[1], reverse=True)}
+        print(new_dictionary)
+        print("=================\n")
+        print(sorted_new_dict)
+        print("=================\n")
+        print(sorted_new_dict_2)
+
+
+    def read_file_data(self):
+        pass
+
+    def new_account_creation(self):
+        pass
+
+    def login(self):
+        pass
+
+    def interface_menu(self):
+        pass
+
+
+class Admin(Person):
+    def __init__(self):
+        pass
+
+    def view_all_users(self):
+        pass
+
+    def view_one_user(self):
+        pass
+
+    def delete_one_user(self):
+        pass
+
+    def create_new_user(self):
+        pass
+
+
+class User(Person):
+
+    def __init__(self):
+        pass
+
+    def view_own_personlity(self):
+        pass
+
+    def read_others_quadrants(self):
+        pass
+
+    def save_files(self):
+        pass
+
 
 person = Person()
-person.read_file_data()
-person.login_account(10006,'2020')
-#person.create_new_account()
+person.new_personality_assessment()
+# def main():
+#     pass
 
-#person.personality_assessment()
-person.print_info()
+# if __name__ == '__main__':
+#     main()
