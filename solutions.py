@@ -12,8 +12,6 @@ class Person:
         self.read_file_data()
         #self.create_new_account()
         
-        
-
     def read_file_data(self):
         file_name = 'database_disc.csv'
         
@@ -65,13 +63,14 @@ class Person:
             last_name_upper = last_name.upper()
 
             print(f"Welcome to our application {first_name_upper} {last_name_upper} ")
+            print(f"Your login ID is {reference_no}")
             print(f"Your account has been registered with the following details :-")
             print(f"Name : {first_name_upper} {last_name_upper} ")
             print(f"Age : {user_age} ")
             print(f"Email Address : {email_add} ")
             print(f"Your may enjoy our personality assessment application :)")
 
-
+        file.close()
 
     #THIS IS A USER AND ADMIN FUNCTION
     def login_account(self, account_id = None,password=None):
@@ -96,7 +95,11 @@ class Person:
 
     #THIS IS A USER FUNCTION
     def print_info(self):
-        self.read_file_data()
+        file_name = 'database_disc.csv'
+        
+        current_folder = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_folder,file_name)
+        file = open(file_path,'r')
 
         username_welcome = (f"{self.record[0]} {self.record[1]}")
         upper_username = username_welcome.upper()
@@ -131,13 +134,69 @@ class Person:
         #References : https://www.geeksforgeeks.org/python-get-the-first-key-in-dictionary/
         first_key_value = next(iter(sorted_temp_dict))
 
+        # if sorted_temp_dict[f"{(first_key_value)}"] == 0:
+        #     print("There is no record")
+        # else:
+        #     print(f"The record is {str(first_key_value)}")
+
         #IF first key value is none, output = "not determined yet, please view again after your assessment."
 
+        if self.record[6] == 0 or self.record[7] == 0 or self.record[8] == 0 or self.record[9] == 0:
+            to_print = "not determined yet, please try the assessment and view again later."
+        else:
+            to_print = str(first_key_value)
+
         print(f"Hi {upper_username}")
-        print(f"Your age is {int(self.record[4])} and your dominant personality type is {str(first_key_value)}")
+        print(f"Your age is {int(self.record[4])} and your dominant personality type is {to_print}")
         print(f'Your Current Personality Profile Score is : ')        
         for key,value in sorted_temp_dict.items():
             print(key,' : ',value)
+
+        file.close()
+
+    def read_own_personality(self):
+        file_name = 'database_disc.csv'
+        
+        current_folder = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_folder,file_name)
+        file = open(file_path,'r')
+
+        username_welcome = (f"{self.record[0]} {self.record[1]}")
+        upper_username = username_welcome.upper()
+    
+        temp_dict = {
+            "Controller" : int(self.record[6]),
+            "Promoter" : int(self.record[7]),
+            "Supporter" : int(self.record[8]),
+            "Analyser" : int(self.record[9]) 
+        }
+
+        sorted_temp_dict = dict(sorted(temp_dict.items(),key=lambda item:item[1],reverse=True))
+        #print(sorted_temp_dict)
+
+        #References : https://www.geeksforgeeks.org/python-get-the-first-key-in-dictionary/
+        first_key_value = next(iter(sorted_temp_dict))
+        first_key_value_in_dict = str(first_key_value)
+
+        if self.record[6] == 0 or self.record[7] == 0 or self.record[8] == 0 or self.record[9] == 0:
+            print("You have not done your assessment yet, please try again after performing your personality test")
+        else:
+            if first_key_value_in_dict == "Controller":
+                print(f"There is controller")
+                self.view_d_score()
+            elif first_key_value_in_dict == "Promoter":
+                print(f"There is Promoter")
+                self.view_i_score()
+            elif first_key_value_in_dict =="Supporter":
+                print(f"There is Supporter")
+                self.view_s_score()
+            elif first_key_value_in_dict == "Analyser":
+                print(f"There is Analyser")
+                self.view_c_score()
+            else:
+                print("There is an error, please contact admin for support")
+
+        file.close()
 
 
     #THIS IS AN ADMIN FUNCTION
@@ -984,6 +1043,8 @@ class Person:
             
             new_data.writerow(list_to_combine)
 
+        file.close()
+
         new_dictionary = {
             "Controller" : d_score,
             "Promoter" : i_score,
@@ -999,6 +1060,19 @@ class Person:
 
     def view_d_score(self):
         print(f"D stands for Extrovert & Task Oriented, which means you have the personality of a Controller!")
+        print(
+        '''
+        They will likely be very autocratic managers in a team environment and 
+        rise to the top during crisis moments. 
+        
+        They will provide direction and leadership, push groups toward decision-making, 
+        will maintain focus on the goals, and will push for tangible results.
+
+        They can sometimes intimidate groups because of their directness and lack of social interest around others. 
+        They are generally optimistic thinkers, but may have personality conflicts with others they perceive as negative. 
+        They function well with heavy work loads and when under stress, and welcome new challenges and risks without fear.
+        '''
+        )
 
     def view_i_score(self):
         print(f"I stands for Extrovert & People Oriented, which means you have the personality of a Promoter!")
@@ -1008,6 +1082,8 @@ class Person:
 
     def view_s_score(self):
         print(f"S stands for Introvert & People Oriented, which means you have the personality of a Analyser!")
+
+
 
     def menu(self):
         print(f"Welcome JS's DISC Personality Assessment Application.")
@@ -1030,6 +1106,7 @@ class Person:
                 self.personality_assessment()
 
             elif option == 3:
+                self.read_own_personality()
                 print("Read Own Personality Traits")
                 
             elif option == 4:
