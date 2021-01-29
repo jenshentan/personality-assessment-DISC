@@ -85,14 +85,14 @@ class User(Person):
             new_data = csv.writer(main_data,delimiter=",",quoting=csv.QUOTE_MINIMAL)
             new_key = max(list(Person.data.keys())) + 1
             #print(new_key)
-            print(f"You are creating a new personality assessment account with us and your reference number is {new_key}")
+            print(Fore.GREEN + f"You are creating a new personality assessment account with us and your reference number is {new_key}")
 
             reference_no = new_key
-            first_name = input("Enter Your First Name : ")
-            last_name = input("Enter Your Last Name : ")
-            email_add = input("Enter Your Email Address : ")
-            new_pass = input("Create a new Password : ")
-            user_age = int(input("Enter Your Age : "))
+            first_name = input(Fore.WHITE + "Enter Your First Name : ")
+            last_name = input(Fore.WHITE +"Enter Your Last Name : ")
+            email_add = input(Fore.WHITE +"Enter Your Email Address : ")
+            new_pass = input(Fore.WHITE +"Create a new Password : ")
+            user_age = int(input(Fore.WHITE +"Enter Your Age : "))
             acc_type = "user"
             d_quadrant = 0
             i_quadrant = 0
@@ -106,10 +106,10 @@ class User(Person):
             first_name_upper = first_name.upper()
             last_name_upper = last_name.upper()
 
-            print(f"Welcome to our application {first_name_upper} {last_name_upper} ")
-            print(f"Your login ID is {reference_no}")
-            print(f"Your account has been registered with the following details :-")
-            print(f"Name : {first_name_upper} {last_name_upper} ")
+            print(Fore.LIGHTGREEN_EX + f"Welcome to our application {first_name_upper} {last_name_upper} ")
+            print(Fore.LIGHTGREEN_EX +f"Your login ID is {reference_no}")
+            print(Fore.LIGHTGREEN_EX +f"Your account has been registered with the following details :-")
+            print(Fore.LIGHTGREEN_EX +f"Name : {first_name_upper} {last_name_upper} ")
             print(f"Age : {user_age} ")
             print(f"Email Address : {email_add} ")
             print(f"Your may enjoy our personality assessment application :)")
@@ -169,9 +169,9 @@ class User(Person):
         else:
             to_print = str(first_key_value)
 
-        print(f"Hi {upper_username}")
-        print(f"Your age is {int(self.record[4])} and your dominant personality type is {to_print}")
-        print(f'Your Current Personality Profile Score is : ')        
+        print(Fore.LIGHTGREEN_EX + f"Hi {upper_username}")
+        print(Fore.LIGHTGREEN_EX + f"Your age is {int(self.record[4])} and your dominant personality type is {to_print}")
+        print(Fore.LIGHTGREEN_EX + f'Your Current Personality Profile Score is : ')        
         for key,value in sorted_temp_dict.items():
             print(key,' : ',value)
 
@@ -204,19 +204,19 @@ class User(Person):
         first_key_value_in_dict = str(first_key_value)
 
         if self.record[6] == 0 or self.record[7] == 0 or self.record[8] == 0 or self.record[9] == 0:
-            print("You have not done your assessment yet, please try again after performing your personality test")
+            print(Fore.RED + "You have not done your assessment yet, please try again after performing your personality test")
         else:
             if first_key_value_in_dict == "Controller":
-                print(f"D stands for Extrovert & Task Oriented, which means you have the personality of a Controller!")
+                print(Fore.RED + f"D stands for Extrovert & Task Oriented, which means you have the personality of a Controller!")
                 self.view_d_score()
             elif first_key_value_in_dict == "Promoter":
-                print(f"I stands for Extrovert & People Oriented, which means you have the personality of a Promoter!")
+                print(Fore.BLUE + f"I stands for Extrovert & People Oriented, which means you have the personality of a Promoter!")
                 self.view_i_score()
             elif first_key_value_in_dict =="Supporter":
-                print(f"S stands for Introvert & People Oriented, which means you have the personality of a Supporter!")
+                print(Fore.GREEN + f"S stands for Introvert & People Oriented, which means you have the personality of a Supporter!")
                 self.view_s_score()
             elif first_key_value_in_dict == "Analyser":
-                print(f"C stands for Introvert & Task Oriented, which means you have the personality of a Analyser!")
+                print(Fore.YELLOW + f"C stands for Introvert & Task Oriented, which means you have the personality of a Analyser!")
                 self.view_c_score()
             else:
                 print("There is an error, please contact admin for support")
@@ -1085,7 +1085,7 @@ class User(Person):
        
     def view_d_score(self):
         #Referenced "https://discinsights.com/personality-style-d"
-        print(
+        print(Fore.RED + 
         '''
 The D Personality Style tends to be direct and decisive, sometimes described as dominant. 
 They would prefer to lead than follow, and tend towards leadership and management positions. 
@@ -1110,7 +1110,7 @@ The D Personality Type craves to be in control of the situation, and therefore f
     def view_i_score(self):
         #Referenced : https://discinsights.com/personality-style-i
         
-        print(
+        print(Fore.LIGHTBLUE_EX +
         '''
 The I Personality Style is not afraid to be the center of attention. 
 They are enthusiastic, optimistic, talkative, persuasive, impulsive and emotional. 
@@ -1134,8 +1134,8 @@ Since acceptance and approval by others is the main desire of I Personality Type
 
     def view_c_score(self):
         #Referenced : https://discinsights.com/personality-style-c
-        print(f"C stands for Introvert & Task Oriented, which means you have the personality of a Analyser!")
-        print(
+        #print(f"C stands for Introvert & Task Oriented, which means you have the personality of a Analyser!")
+        print(Fore.YELLOW + 
         '''
 The C DISC Styles are accurate, precise, detail-oriented and conscientious. 
 They think very analytically and systematically, and make decisions carefully 
@@ -1164,7 +1164,7 @@ Because C Personality Types take great pride in being accurate and correct, they
 
 
     def view_s_score(self):
-        print(
+        print(Fore.LIGHTGREEN_EX +
         '''
 The S Personality Type is known for being steady, stable, and predictable. 
 They are even-tempered, friendly, sympathetic with others, and very generous with loved ones. 
@@ -1250,7 +1250,7 @@ Because the S strives for stability and a feeling of peace and safety, they fear
 
 
     def menu_other_traits(self):
-        print(f"Which other traits would you like to read today?")
+        print(Fore.WHITE + f"Which other traits would you like to read today?")
         print("[1] - D Personality")
         print("[2] - I Personality")
         print("[3] - S Personality")
@@ -1279,10 +1279,10 @@ Because the S strives for stability and a feeling of peace and safety, they fear
                 print("Please Choose Available Options on Screen")
 
             print()
-            self.menu()
+            self.menu_other_traits()
             option = int(input("What would you like to do today : "))
         
-        main()
+        self.menu()
         #print("See you again soon!")
 
     def my_suitable_job(self):
