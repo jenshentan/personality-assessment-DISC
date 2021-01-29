@@ -1478,7 +1478,7 @@ They need a highly structured environment with exact instructions and rules, as 
             writer = csv.writer(file, delimiter=",",quoting=csv.QUOTE_MINIMAL)
             writer.writerow(list_to_combine)
 
-        print("Your file has been successfully saved & updated")
+        print(Fore.RED + "Your file has been successfully saved & updated")
 
     def check_compatibility(self):
         self.read_file_data()
@@ -1572,9 +1572,9 @@ class Admin(Person):
 
     def oldest_user(self):
         self.read_file_data()
-        
-        print(Person.data.keys())
-        print(Person.data.items())
+        print("Function coming soon")
+        # print(Person.data.keys())
+        # print(Person.data.items())
 
     def create_new_account_admin(self):
 
@@ -1623,6 +1623,29 @@ class Admin(Person):
 
     def download_data(self):
         self.read_file_data()
+        record_ddmmyy = datetime.datetime.now()
+
+        #record_ddmmyy = datetime.datetime.now()
+        for key, value in Person.data.items():
+            print(key,value)
+
+            file_to_write = (key,value,record_ddmmyy)
+
+            new_name = input(Fore.WHITE + "What would you like to name your file? : ")
+
+            file_name = f"{new_name}.csv"
+            with open(file_name,'a+',newline='') as file:
+            
+                writer = csv.writer(file, delimiter=",",quoting=csv.QUOTE_MINIMAL)
+                writer.writerow(file_to_write)
+            #to_print = (key,value)
+        #LIST TO COMBINE = LIST TO COMBINE + SCORE LIST
+        #list_to_combine = [self.key,self.record[0],self.record[1],self.record[2],self.record[3],self.record[4],self.record[5],self.record[6],self.record[7],self.record[8],self.record[9],record_ddmmyy]
+
+
+
+
+        print(Fore.RED + "Your file has been successfully saved & updated")
 
 
     def admin_menu(self):
@@ -1661,12 +1684,15 @@ class Admin(Person):
 
             elif option == 5:
                 print("[5] - Youngest Person Age in Database")
+                print("Function coming soon")
 
             elif option == 6:
                 print("[6] - Average Age in Database")
+                print("Function coming soon")
 
             elif option == 7:
                 print("[7] - Statistics - How many users in each quadrant DISC?")
+                print("Function coming soon")
 
             elif option == 8:
                 print("[8] - Manual Account Creation")
@@ -1674,7 +1700,8 @@ class Admin(Person):
                 
 
             elif option == 9:
-                print("[9] - Download Data with New File Name")
+                print("[9] - Downloading Data with New File Name")
+                self.download_data()
 
             else:
                 print("Please Choose Available Options on Screen")
